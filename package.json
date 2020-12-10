@@ -1,6 +1,6 @@
 {
   "name": "easy-websocket",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Simple to use, websocket for client",
   "main": "index.ts",
   "scripts": {
