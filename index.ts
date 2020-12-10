@@ -33,8 +33,8 @@ interface ISubscribeList {
   }
 }
 
-class EasyWebSocket {
-  protected static instance: EasyWebSocket | null
+class EasySocket {
+  protected static instance: EasySocket | null
   protected url: string = ''
   socket!: WebSocket
   protected options!: ISocketOptions
@@ -52,14 +52,14 @@ class EasyWebSocket {
   onclose!: (socket: WebSocket, ev: CloseEvent) => any | null
 
   constructor(url: string, options: ISocketOptions = {}) {
-    if (EasyWebSocket.instance) return EasyWebSocket.instance
+    if (EasySocket.instance) return EasySocket.instance
 
     this.url = url
     // 初始化配置
     this.assignOptions(options)
     // 判断是否手动启动连接
     this.options.manualOpen && this.connect()
-    EasyWebSocket.instance = this
+    EasySocket.instance = this
   }
 
   /**
@@ -118,7 +118,7 @@ class EasyWebSocket {
     }
 
     this.socket.onerror = (ev) => {
-      EasyWebSocket.instance = null
+      EasySocket.instance = null
       this.reconnect()
       this.onerror && this.onerror(this.socket, ev)
       console.error('[socket]: reconnect... error: ', ev)
@@ -127,7 +127,7 @@ class EasyWebSocket {
     }
 
     this.socket.onclose = (ev) => {
-      EasyWebSocket.instance = null
+      EasySocket.instance = null
       this.onclose && this.onclose(this.socket, ev)
       // 停止心跳检测
       clearTimeout(this.heartbeatTimer)
@@ -250,7 +250,7 @@ class EasyWebSocket {
    */
   close(code = 1000, reason: string | undefined = undefined) {
     this.socket.close(code, reason)
-    EasyWebSocket.instance = null
+    EasySocket.instance = null
   }
 
   /**
@@ -299,4 +299,4 @@ class EasyWebSocket {
   }
 }
 
-export default EasyWebSocket
+export default EasySocket

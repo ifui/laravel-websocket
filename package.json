@@ -1,5 +1,5 @@
 {
-  "name": "easy-websocket",
+  "name": "easy-socket",
   "version": "0.1.0",
   "description": "Simple to use, websocket for client",
   "main": "index.ts",
