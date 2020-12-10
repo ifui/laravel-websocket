@@ -33,8 +33,8 @@ interface ISubscribeList {
   }
 }
 
-class EasySocket {
-  protected static instance: EasySocket | null
+class Socket {
+  protected static instance: Socket | null
   protected url: string = ''
   socket!: WebSocket
   protected options!: ISocketOptions
@@ -52,14 +52,14 @@ class EasySocket {
   onclose!: (socket: WebSocket, ev: CloseEvent) => any | null
 
   constructor(url: string, options: ISocketOptions = {}) {
-    if (EasySocket.instance) return EasySocket.instance
+    if (Socket.instance) return Socket.instance
 
     this.url = url
     // 初始化配置
     this.assignOptions(options)
     // 判断是否手动启动连接
     this.options.manualOpen && this.connect()
-    EasySocket.instance = this
+    Socket.instance = this
   }
 
   /**
@@ -118,7 +118,7 @@ class EasySocket {
     }
 
     this.socket.onerror = (ev) => {
-      EasySocket.instance = null
+      Socket.instance = null
       this.reconnect()
       this.onerror && this.onerror(this.socket, ev)
       console.error('[socket]: reconnect... error: ', ev)
@@ -127,7 +127,7 @@ class EasySocket {
     }
 
     this.socket.onclose = (ev) => {
-      EasySocket.instance = null
+      Socket.instance = null
       this.onclose && this.onclose(this.socket, ev)
       // 停止心跳检测
       clearTimeout(this.heartbeatTimer)
@@ -250,7 +250,7 @@ class EasySocket {
    */
   close(code = 1000, reason: string | undefined = undefined) {
     this.socket.close(code, reason)
-    EasySocket.instance = null
+    Socket.instance = null
   }
 
   /**
@@ -299,4 +299,4 @@ class EasySocket {
   }
 }
 
-export default EasySocket
+export default Socket
